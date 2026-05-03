@@ -22,30 +22,6 @@ Trabajo del Grupo 8 para el Laboratorio II de la Maestría en Data Mining (Unive
 └── README.md
 ```
 
-## Setup
-
-Requiere **Python 3.14**.
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate           # Windows
-# source .venv/bin/activate       # Linux/macOS
-pip install -e .[dev]
-```
-
-Si usás `uv`:
-
-```bash
-uv venv --python 3.14
-uv pip install -e .[dev]
-```
-
-Para sumar la rama deep (PyTorch, ResNet, etc.):
-
-```bash
-pip install -e .[dev,deep]
-```
-
 ## Datos
 
 Los datos no se versionan. Bajarlos manualmente desde Kaggle (`petfinder-adoption-prediction`) y dejarlos en la siguiente disposición:
@@ -53,27 +29,67 @@ Los datos no se versionan. Bajarlos manualmente desde Kaggle (`petfinder-adoptio
 ```
 input/
 └── train/
-    ├── train.csv
-    ├── PetFinder-BreedLabels.csv
-    ├── PetFinder-ColorLabels.csv
-    └── PetFinder-StateLabels.csv
+    ├── train.csv                      # 14993 filas × 24 columnas
+    ├── PetFinder-BreedLabels.csv      # 307 × 3
+    ├── PetFinder-ColorLabels.csv      # 7 × 2
+    └── PetFinder-StateLabels.csv      # 15 × 2
 ```
 
-El dashboard y el notebook resuelven rutas relativas a la raíz del repo (`os.path.join("input", "train")`).
+El dashboard y el notebook resuelven rutas relativas a la raíz del repo (`os.path.join("input", "train")`), por lo que **siempre se corren desde la raíz**.
 
-## Correr el dashboard
+## Cómo correr el proyecto
 
-```bash
+Requiere **Python 3.14** (verificado con CPython 3.14.4) y [`uv`](https://docs.astral.sh/uv/).
+
+### 1. Crear el entorno e instalar el paquete
+
+```powershell
+# desde la raíz del repo
+uv venv --python 3.14
+uv pip install -e .[dev]
+```
+
+Esto crea `.venv/` con Python 3.14, instala las dependencias core (`pandas`, `numpy`, `scikit-learn`, `lightgbm`, `optuna`, `streamlit`, `plotly`, `matplotlib`, `shap`, `joblib`, `tqdm`, `Pillow`) y las herramientas de desarrollo (`pre-commit`, `nbstripout`, `ruff`). El paquete `ani_lab` queda en modo editable, así que `from ani_lab.viz import …` funciona desde notebooks y scripts.
+
+Para sumar la rama deep (PyTorch / ResNet / explicabilidad de imágenes):
+
+```powershell
+uv pip install -e .[dev,deep]
+```
+
+### 2. Activar el entorno
+
+```powershell
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+
+# Linux/macOS
+source .venv/bin/activate
+```
+
+### 3. Arrancar el dashboard Streamlit
+
+```powershell
 streamlit run app/EDAdashboard.py
 ```
 
-## Notebook EDA
+Por defecto queda en `http://localhost:8501`. El endpoint `/_stcore/health` devuelve `ok` cuando está listo.
 
-```bash
+### 4. Abrir el notebook de EDA
+
+```powershell
 jupyter lab notebooks/01_eda_tabulares.ipynb
 ```
 
-El notebook importa helpers vía `from ani_lab.viz import plot_confusion_matrix`. Para que funcione, hay que tener el paquete instalado en modo editable (`pip install -e .`).
+El notebook importa helpers vía `from ani_lab.viz import plot_confusion_matrix` — requiere haber hecho el paso 1.
+
+### 5. (Opcional) Activar los pre-commit hooks
+
+```powershell
+pre-commit install
+```
+
+A partir de ahí, cada commit corre `nbstripout` (limpia outputs de notebooks), `ruff --fix` + `ruff-format` (lint y formato Python) y verificadores básicos (whitespace, EOF, YAML, archivos > 1 MB, conflict markers).
 
 ## Agradecimientos
 
