@@ -1,0 +1,50 @@
+[project]
+name = "ani-lab"
+version = "0.1.0"
+description = "Lab II - Grupo 8 (UA MDM): EDA + modelos tabulares + deep sobre PetFinder Adoption Prediction."
+readme = "README.md"
+requires-python = ">=3.14"
+authors = [{ name = "Grupo 8 - Lab II" }]
+license = { text = "MIT" }
+
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "scikit-learn>=1.3",
+    "lightgbm>=4.0",
+    "optuna>=3.5",
+    "streamlit>=1.30",
+    "plotly>=5.18",
+    "matplotlib>=3.8",
+    "shap>=0.44",
+    "joblib>=1.3",
+    "tqdm>=4.66",
+    "Pillow>=10.0",
+]
+
+[project.optional-dependencies]
+deep = [
+    "torch>=2.1",
+    "torchvision>=0.16",
+]
+dev = [
+    "pre-commit>=3.5",
+    "nbstripout>=0.6",
+    "ruff>=0.5",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+extend-exclude = ["reference", "notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B", "UP"]
