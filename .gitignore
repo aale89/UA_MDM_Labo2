@@ -1,17 +1,47 @@
- # CSV files
+# ── Datos ────────────────────────────────────────────
+input/
+data/
 *.csv
-
-# JSON files
 *.json
-
-# JPEG files
+*.parquet
+*.feather
+*.zip
 *.jpg
 *.jpeg
 
-*.DS_Store
-
-*.sqlite3
-
+# ── Modelos y experimentos ──────────────────────────
 *.joblib
+*.pkl
+*.sqlite3
+models/
+mlruns/
+optuna_artifacts/
+optuna_temp_artifacts/
+work/
 
-/work/optuna_artifacts/
+# ── Entornos ─────────────────────────────────────────
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# ── Build / packaging artifacts ──────────────────────
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# ── IDE ──────────────────────────────────────────────
+.idea/
+.vscode/
+.claude/
+
+# ── Sistema ──────────────────────────────────────────
+.DS_Store
+__MACOSX/
+._*
+Thumbs.db
+
+# ── Notebooks ────────────────────────────────────────
+.ipynb_checkpoints/
