@@ -91,6 +91,18 @@ pre-commit install
 
 A partir de ahí, cada commit corre `nbstripout` (limpia outputs de notebooks), `ruff --fix` + `ruff-format` (lint y formato Python) y verificadores básicos (whitespace, EOF, YAML, archivos > 1 MB, conflict markers).
 
+## Artefactos de build (no versionados)
+
+Después del `uv pip install -e .[dev]` van a aparecer en disco directorios autogenerados por setuptools, en particular `src/ani_lab.egg-info/` (metadata del paquete: `PKG-INFO`, `SOURCES.txt`, `requires.txt`, `top_level.txt`, `dependency_links.txt`). Si se hiciera un build no editable, también aparecerían `build/` y `dist/`.
+
+Estos directorios **no se versionan** porque:
+
+- Se regeneran solos en cada instalación; lo "fuente de verdad" vive en `pyproject.toml`.
+- Su contenido depende del entorno local (paths absolutos, versiones de setuptools), así que commitearlos genera diffs ruidosos y conflicts entre máquinas.
+- Convención estándar de la comunidad Python (PyPA): `*.egg-info/`, `build/`, `dist/`, `.eggs/` siempre van al `.gitignore`.
+
+El `.gitignore` del repo ya bloquea estos patrones en la sección _Build / packaging artifacts_, así que no hace falta intervenir manualmente.
+
 ## Agradecimientos
 
 Este repositorio nace como fork de [`AraneoA/UA_MDM_Labo2`](https://github.com/AraneoA/UA_MDM_Labo2), basado a su vez en [`Argentan/DMA_LAB2`](https://github.com/Argentan/DMA_LAB2) de Rafael Crescenzi y Pablo Albini. El material de cursada se conserva intacto bajo `reference/`.
